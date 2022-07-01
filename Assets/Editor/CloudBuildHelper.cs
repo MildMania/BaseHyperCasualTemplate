@@ -32,18 +32,13 @@ public class CloudBuildHelper : MonoBehaviour
     private static void ModifyPlist(string path)
     {
         string plistPath = path + "/Info.plist";
-        Debug.Log("In the ChangeXCodePlist, path is: " + plistPath);
+        Debug.Log("Plist path: " + plistPath);
+       
         PlistDocument plistDocument = new PlistDocument();
         plistDocument.ReadFromString(File.ReadAllText(plistPath));
-        Debug.Log("In the ChangeXCodePlist");
-
-        // Get root
         PlistElementDict plistDocumentRootDict = plistDocument.root;
-
-
         plistDocumentRootDict.SetBoolean("ITSAppUsesNonExemptEncryption", false);
 
-        Debug.Log("PLIST: " + plistDocument.WriteToString());
     }
 
     private static void ModifyFrameworks(string path)
