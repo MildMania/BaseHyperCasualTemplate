@@ -33,12 +33,13 @@ public class CloudBuildHelper : MonoBehaviour
     {
         string plistPath = path + "/Info.plist";
         Debug.Log("Plist path: " + plistPath);
-       
+
         PlistDocument plistDocument = new PlistDocument();
         plistDocument.ReadFromString(File.ReadAllText(plistPath));
         PlistElementDict plistDocumentRootDict = plistDocument.root;
         plistDocumentRootDict.SetBoolean("ITSAppUsesNonExemptEncryption", false);
-
+        File.WriteAllText(plistPath, plistDocument.WriteToString());
+        Debug.Log("---Plist---\n" + plistDocument.WriteToString());
     }
 
     private static void ModifyFrameworks(string path)
