@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MMFramework.Utilities;
 using UnityEngine;
 
 public abstract class BaseAnimationController<TAnimation> : MonoBehaviour where TAnimation : Enum
@@ -18,25 +19,29 @@ public abstract class BaseAnimationController<TAnimation> : MonoBehaviour where 
     [SerializeField] private List<AnimationInfo> _animationInfo = null;
     [HideInInspector] private TAnimation CurrentAnimationType { get; set; }
 
+    public Animator Animator => _animator;
+
 
     public void PlayAnimation(TAnimation animationType, float transitionDuration = 0.1f,
-        float normalizedAnimTime = 0, float fixedTimeOffset = 0)
+        float normalizedAnimTime = 0, float fixedTimeOffset = 0, Action callback = null, float speed = 1)
     {
-        if (CurrentAnimationType.Equals(animationType))
-        {
-            return;
-        }
-
         string animationName = GetAnimationName(animationType);
 
-        if (animationName == default || _animator == null)
+        if (animationName == default || Animator == null)
         {
             return;
         }
 
+        Animator.speed = speed;
         CurrentAnimationType = animationType;
 
-        _animator.CrossFadeInFixedTime(animationName, transitionDuration, 0, fixedTimeOffset, normalizedAnimTime);
+        Animator.CrossFadeInFixedTime(animationName, transitionDuration, 0, fixedTimeOffset, normalizedAnimTime);
+        if (callback != null)
+        {
+            Animator.UnregisterOnComplete(this);
+            CoroutineRunner.Instance.WaitForSeconds(transitionDuration,
+                () => Animator.OnComplete(this, callback.Invoke));
+        }
     }
 
     private string GetAnimationName(TAnimation animationType)
