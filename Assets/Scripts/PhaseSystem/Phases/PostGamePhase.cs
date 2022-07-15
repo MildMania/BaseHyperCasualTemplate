@@ -6,7 +6,7 @@
 
     protected override void ProcessFlow()
     {
-        UnityEngine.Debug.Log("Post Game Phase");
+        Logger.Log("Post Game Phase");
 
         TraverseCompleted();
     }

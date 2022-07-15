@@ -8,7 +8,7 @@ public class GamePhase : PhaseActionNode
 
     protected override void ProcessFlow()
     {
-        UnityEngine.Debug.Log("Game Phase");
+        Logger.Log("Game Phase");
 
         ProgressionManager.Instance.OnProgressionUpdated += OnProgressionUpdated;
     }

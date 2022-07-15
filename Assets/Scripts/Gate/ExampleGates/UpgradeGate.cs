@@ -5,6 +5,6 @@ public class UpgradeGate : GateBase
 {
     protected override void OnEnterCustomActions()
     {
-        Debug.Log("Upgrade Gate");
+        Logger.Log("Upgrade Gate");
     }
 }

@@ -5,6 +5,6 @@ public class DegradeGate : GateBase
 {
     protected override void OnEnterCustomActions()
     {
-        Debug.Log("Degrade Gate");
+        Logger.Log("Degrade Gate");
     }
 }

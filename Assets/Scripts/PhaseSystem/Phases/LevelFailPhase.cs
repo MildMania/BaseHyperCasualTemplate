@@ -6,7 +6,7 @@
 
     protected override void ProcessFlow()
     {
-        UnityEngine.Debug.Log("Level Fail Phase");
+        Logger.Log("Level Fail Phase");
     }
 
     public void CompletePhase()

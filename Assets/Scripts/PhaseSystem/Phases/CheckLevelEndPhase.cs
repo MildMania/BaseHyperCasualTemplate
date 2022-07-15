@@ -11,7 +11,7 @@ public class CheckLevelEndPhase : PhaseConditionalNode
 
     protected override void CheckConditions(Action<int> callback)
     {
-        UnityEngine.Debug.Log("Check Level End Phase");
+        Logger.Log("Check Level End Phase");
 
         if (ProgressionManager.Instance.ActiveProgression.GetProgressionType().Equals(EProgressionResult.Success))
         {

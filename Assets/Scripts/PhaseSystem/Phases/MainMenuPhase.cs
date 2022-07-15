@@ -6,7 +6,7 @@
 
     protected override void ProcessFlow()
     {
-        UnityEngine.Debug.Log("Main Menu Phase");
+        Logger.Log("Main Menu Phase");
     }
 
     public void CompletePhase()
