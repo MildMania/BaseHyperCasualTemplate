@@ -43,7 +43,12 @@ public class SceneSelector : EditorWindow
 
     private static string _pathToScenesPrefix = "Assets/Scenes";
     private static string _managerSceneName = "ManagerScene";
+    private static string _openButtonName = "Open";
+    private static string _playButtonName = "Play";
+    private static string _stopButtonName = "Stop";
+    private static string _filter = "t:Scene";
     private static bool _isUpdated;
+    private static string[] _folderPaths = {_pathToScenesPrefix};
 
     [MenuItem("Tools/Scene Selector %#o")]
     static void OpenWindow()
@@ -65,7 +70,7 @@ public class SceneSelector : EditorWindow
     private void CreateGUI()
     {
         rootVisualElement.Clear();
-        String[] assetGuids = AssetDatabase.FindAssets("t:Scene");
+        String[] assetGuids = AssetDatabase.FindAssets(_filter, _folderPaths);
         assetGuids.ForEach(assetGuid =>
         {
             String scenePath = AssetDatabase.GUIDToAssetPath(assetGuid);
@@ -75,11 +80,6 @@ public class SceneSelector : EditorWindow
 
     private static VisualElement CreateSceneButton(string scenePath)
     {
-        if (!scenePath.StartsWith(_pathToScenesPrefix))
-        {
-            return null;
-        }
-
         SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
         CreateButtonGroup(sceneAsset, out VisualElement buttonGroup);
         CreateButton(scenePath, buttonGroup);
@@ -89,9 +89,12 @@ public class SceneSelector : EditorWindow
 
     private static void CreateButton(String scenePath, VisualElement buttonGroup)
     {
-        Button openButton = new Button(() => { EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single); })
+        Button openButton = new Button(() =>
         {
-            text = "Open"
+            EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+        })
+        {
+            text = _openButtonName
         };
         buttonGroup.Add(openButton);
 
@@ -101,7 +104,7 @@ public class SceneSelector : EditorWindow
             EditorApplication.EnterPlaymode();
         })
         {
-            text = "Play"
+            text = _playButtonName
         };
         buttonGroup.Add(playButton);
 
@@ -115,7 +118,7 @@ public class SceneSelector : EditorWindow
             }
         })
         {
-            text = "Stop"
+            text = _stopButtonName
         };
         buttonGroup.Add(stopButton);
     }
