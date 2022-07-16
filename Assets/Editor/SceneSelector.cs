@@ -8,21 +8,34 @@ public class SceneSelector : EditorWindow
 {
     public class FileModificationProcessor : AssetModificationProcessor
     {
+        private static bool IsStartWithScenePrefix(string path)
+        {
+            return path.StartsWith(_pathToScenesPrefix);
+        }
+
         static string[] OnWillSaveAssets(string[] paths)
         {
-            _isUpdated = true;
+            foreach (var path in paths)
+            {
+                _isUpdated = IsStartWithScenePrefix(path);
+                if (_isUpdated)
+                {
+                    break;
+                }
+            }
+
             return paths;
         }
 
         public static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions rao)
         {
-            _isUpdated = true;
+            _isUpdated = IsStartWithScenePrefix(path);
             return AssetDeleteResult.DidNotDelete;
         }
 
-        private static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
+        private static AssetMoveResult OnWillMoveAsset(string path, string destinationPath)
         {
-            _isUpdated = true;
+            _isUpdated = IsStartWithScenePrefix(destinationPath) || IsStartWithScenePrefix(path);
             return AssetMoveResult.DidNotMove;
         }
     }
